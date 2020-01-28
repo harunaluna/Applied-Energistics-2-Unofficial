@@ -52,6 +52,7 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.*;
 import net.minecraft.nbt.NBTTagCompound;
@@ -536,8 +537,15 @@ public class PartFormationPlane extends PartUpgradeable implements ICellContaine
 
 						if( !w.spawnEntityInWorld( result ) )
 						{
-							result.setDead();
-							worked = false;
+							if (((EntityItem)result).getEntityItem().getItem() == Item.getItemFromBlock(Blocks.dragon_egg))
+							{ 	// Ducttape fix for HEE replacing the Dragon Egg
+								// HEE does cancel the event but does not mark passed entity as dead
+								worked = !result.isDead;
+							}
+							else {
+								result.setDead();
+								worked = false;
+							}
 						}
 					}
 				}
