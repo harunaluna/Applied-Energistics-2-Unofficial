@@ -235,7 +235,7 @@ public class TileEnergyCell extends AENetworkTile implements IAEPowerStorage
 
 	private double getInternalMaxPower()
 	{
-		return this.internalMaxPower;
+		return this.internalMaxPower * PowerMultiplier.CONFIG.multiplier;
 	}
 
 	void setInternalMaxPower( final double internalMaxPower )

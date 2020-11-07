@@ -2,7 +2,9 @@ package appeng.parts.layers;
 
 import appeng.api.parts.IPart;
 import appeng.api.parts.LayerBase;
+import appeng.integration.IntegrationType;
 import appeng.parts.p2p.IPartGT5Power;
+import appeng.transformer.annotations.Integration;
 import gregtech.api.interfaces.tileentity.IEnergyConnected;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Utility;
@@ -17,6 +19,7 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
 
+@Integration.Interface( iname = IntegrationType.GT, iface = "gregtech.api.interfaces.tileentity.IEnergyConnected" )
 public class LayerIEnergyConnected  extends LayerBase implements IEnergyConnected {
     public LayerIEnergyConnected() {
     }
@@ -31,7 +34,9 @@ public class LayerIEnergyConnected  extends LayerBase implements IEnergyConnecte
                 TileEntity source = this.getTileEntityAtSide(side);
                 if (source != null && ((IEnergySink) part).acceptsEnergyFrom(source, dir)) {
                     long rUsedAmperes;
-                    for (rUsedAmperes = 0L; amperage > rUsedAmperes && ((IEnergySink) part).getDemandedEnergy() > 0.0D && ((IEnergySink) part).injectEnergy(dir, (double) voltage, (double) voltage) < (double) voltage; ++rUsedAmperes) {
+                    for (rUsedAmperes = 0L; amperage > rUsedAmperes && ((IEnergySink) part).getDemandedEnergy() > 0.0D
+                            && ((IEnergySink) part).injectEnergy(dir, (double) voltage, (double) voltage) < (double) voltage;
+                         ++rUsedAmperes) {
                     }
 
                     return rUsedAmperes;

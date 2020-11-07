@@ -28,7 +28,9 @@ import appeng.block.networking.BlockCableBus;
 import appeng.core.features.AEFeature;
 import appeng.core.features.AETileBlockFeatureHandler;
 import appeng.core.features.IAEFeature;
+import appeng.core.sync.GuiBridge;
 import appeng.helpers.ICustomCollision;
+import appeng.items.tools.quartz.ToolQuartzCuttingKnife;
 import appeng.tile.AEBaseTile;
 import appeng.tile.networking.TileCableBus;
 import appeng.tile.storage.TileSkyChest;
@@ -51,6 +53,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.world.BlockEvent;
 
 import javax.annotation.Nonnull;
@@ -325,6 +328,16 @@ public abstract class AEBaseTileBlock extends AEBaseBlock implements IAEFeature,
 						}
 						return false;
 					}
+				}
+				if( is.getItem() instanceof ToolQuartzCuttingKnife && !( this instanceof BlockCableBus ) )
+				{
+					if( ForgeEventFactory.onItemUseStart( player, is, 1 ) <= 0 )
+						return false;
+					final AEBaseTile tile = this.getTileEntity( w, x, y, z );
+					if( tile == null )
+						return false;
+					Platform.openGUI( player, tile, ForgeDirection.getOrientation( side ), GuiBridge.GUI_RENAMER );
+					return true;
 				}
 			}
 		}
